@@ -1,7 +1,9 @@
 class Gato:
     # Constructor de la clase, inicializa el tablero y los nombres de los jugadores.
     def __init__(self, tablero, jugador1, jugador2):
-        self._tablero, self._jugador1, self._jugador2 = tablero, jugador1, jugador2
+        self._tablero = tablero
+        self._jugador1 = jugador1
+        self._jugador2 = jugador2
 
     # Diseño inicial del tablero, representando un tablero de 3x3 con separadores.
     tablero = [
@@ -37,17 +39,17 @@ class Gato:
 
     # Método para determinar si hay un ganador
     def ganador(self):
-        # Definición de las líneas de victoria utilizando zip para crear pares de coordenadas.
+        # Definición de las líneas de victoria utilizando desempaquetamiento extendido.
         lineas_victoria = [
-            # Usando zip y asignación múltiple para definir líneas de victoria
-            [(i, j) for i, j in zip([0, 0, 0], [0, 2, 4])],  # Filas
-            [(i, j) for i, j in zip([2, 2, 2], [0, 2, 4])],
-            [(i, j) for i, j in zip([4, 4, 4], [0, 2, 4])],
-            [(i, j) for i, j in zip([0, 2, 4], [0, 0, 0])],  # Columnas
-            [(i, j) for i, j in zip([0, 2, 4], [2, 2, 2])],
-            [(i, j) for i, j in zip([0, 2, 4], [4, 4, 4])],
-            [(i, j) for i, j in zip([0, 2, 4], [0, 2, 4])],  # Diagonales
-            [(i, j) for i, j in zip([0, 2, 4], [4, 2, 0])]
+            # Aquí aplicamos el desempaquetamiento extendido para simplificar la definición de las líneas de victoria.
+            *[(i, j) for i, j in zip([0, 0, 0], [0, 2, 4])],  # Filas
+            *[(i, j) for i, j in zip([2, 2, 2], [0, 2, 4])],
+            *[(i, j) for i, j in zip([4, 4, 4], [0, 2, 4])],
+            *[(i, j) for i, j in zip([0, 2, 4], [0, 0, 0])],  # Columnas
+            *[(i, j) for i, j in zip([0, 2, 4], [2, 2, 2])],
+            *[(i, j) for i, j in zip([0, 2, 4], [4, 4, 4])],
+            *[(i, j) for i, j in zip([0, 2, 4], [0, 2, 4])],  # Diagonales
+            *[(i, j) for i, j in zip([0, 2, 4], [4, 2, 0])]
         ]
 
         # Comprensión de diccionarios para verificar las condiciones de victoria por símbolo.
@@ -64,8 +66,8 @@ class Gato:
 
     # Método principal para ejecutar el juego, maneja la lógica del juego y el intercambio de turnos.
     def iniciar_juego(self):
-        self.imprimir_tablero()
         while self.turno < 9:
+            self.imprimir_tablero()
             if self.jugador1 == "":
                 self.jugador1, self.jugador2 = input("Nombre de jugador 1 (x): "), input("Nombre de jugador 2 (o): ")
             else:
@@ -89,13 +91,14 @@ class Gato:
                 if self.turno == 9:
                     print("Empate...")
 
-# Creación e inicialización del juego con un tablero vacío y sin nombres de jugadores.
-tablero_inicial = [
-    [" ", "|", " ", "|", " "],
-    ["-", "+", "-", "+", "-"],
-    [" ", "|", " ", "|", " "],
-    ["-", "+", "-", "+", "-"],
-    [" ", "|", " ", "|", " "]
-]
-juego = Gato(tablero_inicial, "", "")
-juego.iniciar_juego()
+if __name__ == "__main__":
+    # Creación e inicialización del juego con un tablero vacío y sin nombres de jugadores.
+    tablero_inicial = [
+        [" ", "|", " ", "|", " "],
+        ["-", "+", "-", "+", "-"],
+        [" ", "|", " ", "|", " "],
+        ["-", "+", "-", "+", "-"],
+        [" ", "|", " ", "|", " "]
+    ]
+    juego = Gato(tablero_inicial, "", "")
+    juego.iniciar_juego()
