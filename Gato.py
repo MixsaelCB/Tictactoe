@@ -1,9 +1,7 @@
 class Gato:
     # Constructor de la clase, inicializa el tablero y los nombres de los jugadores.
     def __init__(self, tablero, jugador1, jugador2):
-        self._tablero = tablero
-        self._jugador1 = jugador1
-        self._jugador2 = jugador2
+        self._tablero, self._jugador1, self._jugador2 = tablero, jugador1, jugador2
 
     # Diseño inicial del tablero, representando un tablero de 3x3 con separadores.
     tablero = [
@@ -15,15 +13,10 @@ class Gato:
     ]
 
     # Variables para controlar el estado del juego.
-    turno_1 = True
-    jugador1 = ""
-    jugador2 = ""
-    turno = 0
+    turno_1, jugador1, jugador2, turno = True, "", "", 0
 
     # Método para modificar el tablero basado en la posición elegida por el jugador.
     def cambiar_tablero(self, posicion, jugador):
-        # Uso de comprensión de conjuntos para obtener las posiciones ya ocupadas.
-        posiciones_ocupadas = {i for i, row in enumerate(self._tablero) for j, val in enumerate(row) if val != " "}
         simbolo = "x" if jugador else "o"
         coordenadas = [
             (4, 0), (4, 2), (4, 4),
@@ -31,7 +24,7 @@ class Gato:
             (0, 0), (0, 2), (0, 4)
         ]
         fila, columna = coordenadas[posicion - 1]
-        if (fila, columna) not in posiciones_ocupadas:
+        if self._tablero[fila][columna] == " ":
             self._tablero[fila][columna] = simbolo
             return 0
         else:
@@ -42,27 +35,27 @@ class Gato:
         for fila in self._tablero:
             print(" ".join(fila))
 
-    # Método para determinar si hay un ganador, utilizando listas como condiciones y comprensión de diccionarios.
+    # Método para determinar si hay un ganador
     def ganador(self):
-        # Definición de las líneas de victoria.
+        # Definición de las líneas de victoria utilizando zip para crear pares de coordenadas.
         lineas_victoria = [
-            [(0, 0), (0, 2), (0, 4)],
-            [(2, 0), (2, 2), (2, 4)],
-            [(4, 0), (4, 2), (4, 4)],
-            [(0, 0), (2, 0), (4, 0)],
-            [(0, 2), (2, 2), (4, 2)],
-            [(0, 4), (2, 4), (4, 4)],
-            [(0, 0), (2, 2), (4, 4)],
-            [(4, 0), (2, 2), (0, 4)]
+            # Usando zip y asignación múltiple para definir líneas de victoria
+            [(i, j) for i, j in zip([0, 0, 0], [0, 2, 4])],  # Filas
+            [(i, j) for i, j in zip([2, 2, 2], [0, 2, 4])],
+            [(i, j) for i, j in zip([4, 4, 4], [0, 2, 4])],
+            [(i, j) for i, j in zip([0, 2, 4], [0, 0, 0])],  # Columnas
+            [(i, j) for i, j in zip([0, 2, 4], [2, 2, 2])],
+            [(i, j) for i, j in zip([0, 2, 4], [4, 4, 4])],
+            [(i, j) for i, j in zip([0, 2, 4], [0, 2, 4])],  # Diagonales
+            [(i, j) for i, j in zip([0, 2, 4], [4, 2, 0])]
         ]
-        
-        # Uso de comprensión de diccionarios para verificar las condiciones de victoria por símbolo.
+
+        # Comprensión de diccionarios para verificar las condiciones de victoria por símbolo.
         victoria_por_simbolo = {
             simbolo: any(all(self._tablero[fila][columna] == simbolo for fila, columna in linea) for linea in lineas_victoria)
             for simbolo in ["x", "o"]
         }
 
-        # Usando el diccionario creado para determinar el ganador.
         if victoria_por_simbolo["x"]:
             return 1  # Jugador 1 gana.
         elif victoria_por_simbolo["o"]:
@@ -74,8 +67,7 @@ class Gato:
         self.imprimir_tablero()
         while self.turno < 9:
             if self.jugador1 == "":
-                self.jugador1 = input("Nombre de jugador 1 (x): ")
-                self.jugador2 = input("Nombre de jugador 2 (o): ")
+                self.jugador1, self.jugador2 = input("Nombre de jugador 1 (x): "), input("Nombre de jugador 2 (o): ")
             else:
                 jugador_actual = self.jugador1 if self.turno_1 else self.jugador2
                 print(f"{jugador_actual}, elige una posición (1-9): ")
@@ -107,8 +99,3 @@ tablero_inicial = [
 ]
 juego = Gato(tablero_inicial, "", "")
 juego.iniciar_juego()
-
-                
-
-            
-            
