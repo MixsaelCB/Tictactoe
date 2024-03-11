@@ -34,14 +34,14 @@ class Gato:
 
     # Método para imprimir el estado actual del tablero.
     def imprimir_tablero(self):
-        for fila in self._tablero:
-            print(" ".join(fila))
+        # Mejora en la impresión del tablero utilizando enumerate para agregar índices a cada fila.
+        for index, fila in enumerate(self._tablero):
+            print(f"Fila {index}: {' '.join(fila)}")
 
     # Método para determinar si hay un ganador
     def ganador(self):
         # Definición de las líneas de victoria utilizando desempaquetamiento extendido.
         lineas_victoria = [
-            # Aquí aplicamos el desempaquetamiento extendido para simplificar la definición de las líneas de victoria.
             *[(i, j) for i, j in zip([0, 0, 0], [0, 2, 4])],  # Filas
             *[(i, j) for i, j in zip([2, 2, 2], [0, 2, 4])],
             *[(i, j) for i, j in zip([4, 4, 4], [0, 2, 4])],
