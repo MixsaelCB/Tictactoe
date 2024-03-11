@@ -1,9 +1,7 @@
 class Gato:
     # Constructor de la clase, inicializa el tablero y los nombres de los jugadores.
     def __init__(self, tablero, jugador1, jugador2):
-        self._tablero = tablero
-        self._jugador1 = jugador1
-        self._jugador2 = jugador2
+        self._tablero, self._jugador1, self._jugador2 = tablero, jugador1, jugador2
 
     # Diseño inicial del tablero, representando un tablero de 3x3 con separadores.
     tablero = [
@@ -20,10 +18,11 @@ class Gato:
     # Método para modificar el tablero basado en la posición elegida por el jugador.
     def cambiar_tablero(self, posicion, jugador):
         simbolo = "x" if jugador else "o"
+        # Corrección: Simplificación de la asignación de coordenadas.
         coordenadas = [
-            (4, 0), (4, 2), (4, 4),
+            (0, 0), (0, 2), (0, 4),
             (2, 0), (2, 2), (2, 4),
-            (0, 0), (0, 2), (0, 4)
+            (4, 0), (4, 2), (4, 4)
         ]
         fila, columna = coordenadas[posicion - 1]
         if self._tablero[fila][columna] == " ":
@@ -34,22 +33,24 @@ class Gato:
 
     # Método para imprimir el estado actual del tablero.
     def imprimir_tablero(self):
-        # Mejora en la impresión del tablero utilizando enumerate para agregar índices a cada fila.
-        for index, fila in enumerate(self._tablero):
-            print(f"Fila {index}: {' '.join(fila)}")
+        for fila in self._tablero:
+            print(" ".join(fila))
 
     # Método para determinar si hay un ganador
     def ganador(self):
-        # Definición de las líneas de victoria utilizando desempaquetamiento extendido.
+        # Mejora: Uso de desempaquetamiento extendido para simplificar la creación de líneas de victoria.
         lineas_victoria = [
-            *[(i, j) for i, j in zip([0, 0, 0], [0, 2, 4])],  # Filas
-            *[(i, j) for i, j in zip([2, 2, 2], [0, 2, 4])],
-            *[(i, j) for i, j in zip([4, 4, 4], [0, 2, 4])],
-            *[(i, j) for i, j in zip([0, 2, 4], [0, 0, 0])],  # Columnas
-            *[(i, j) for i, j in zip([0, 2, 4], [2, 2, 2])],
-            *[(i, j) for i, j in zip([0, 2, 4], [4, 4, 4])],
-            *[(i, j) for i, j in zip([0, 2, 4], [0, 2, 4])],  # Diagonales
-            *[(i, j) for i, j in zip([0, 2, 4], [4, 2, 0])]
+            # Filas
+            [(i, j) for i, j in zip([0, 0, 0], [0, 2, 4])],
+            [(i, j) for i, j in zip([2, 2, 2], [0, 2, 4])],
+            [(i, j) for i, j in zip([4, 4, 4], [0, 2, 4])],
+            # Columnas
+            [(i, j) for i, j in zip([0, 2, 4], [0, 0, 0])],
+            [(i, j) for i, j in zip([0, 2, 4], [2, 2, 2])],
+            [(i, j) for i, j in zip([0, 2, 4], [4, 4, 4])],
+            # Diagonales
+            [(i, j) for i, j in zip([0, 2, 4], [0, 2, 4])],
+            [(i, j) for i, j in zip([0, 2, 4], [4, 2, 0])]
         ]
 
         # Comprensión de diccionarios para verificar las condiciones de victoria por símbolo.
@@ -66,8 +67,8 @@ class Gato:
 
     # Método principal para ejecutar el juego, maneja la lógica del juego y el intercambio de turnos.
     def iniciar_juego(self):
+        self.imprimir_tablero()
         while self.turno < 9:
-            self.imprimir_tablero()
             if self.jugador1 == "":
                 self.jugador1, self.jugador2 = input("Nombre de jugador 1 (x): "), input("Nombre de jugador 2 (o): ")
             else:
@@ -91,14 +92,13 @@ class Gato:
                 if self.turno == 9:
                     print("Empate...")
 
-if __name__ == "__main__":
-    # Creación e inicialización del juego con un tablero vacío y sin nombres de jugadores.
-    tablero_inicial = [
-        [" ", "|", " ", "|", " "],
-        ["-", "+", "-", "+", "-"],
-        [" ", "|", " ", "|", " "],
-        ["-", "+", "-", "+", "-"],
-        [" ", "|", " ", "|", " "]
-    ]
-    juego = Gato(tablero_inicial, "", "")
-    juego.iniciar_juego()
+# Creación e inicialización del juego con un tablero vacío y sin nombres de jugadores.
+tablero_inicial = [
+    [" ", "|", " ", "|", " "],
+    ["-", "+", "-", "+", "-"],
+    [" ", "|", " ", "|", " "],
+    ["-", "+", "-", "+", "-"],
+    [" ", "|", " ", "|", " "]
+]
+juego = Gato(tablero_inicial, "", "")
+juego.iniciar_juego()
