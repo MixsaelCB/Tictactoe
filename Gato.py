@@ -5,24 +5,21 @@ class Gato:
 
     # Diseño inicial del tablero, representando un tablero de 3x3 con separadores.
     tablero = [
-        [" ", "|", " ", "|", " "],
-        ["-", "+", "-", "+", "-"],
-        [" ", "|", " ", "|", " "],
-        ["-", "+", "-", "+", "-"],
-        [" ", "|", " ", "|", " "]
+        [" " if (fila == 0 or fila == 2 or fila == 4) and (columna == 1 or columna == 3) else "|" if (fila == 1 or fila == 3) and (columna == 1 or columna == 3) else "-" if (fila == 1 or fila == 3) else " " for columna in range(5)]
+        for fila in range(5)
     ]
 
     # Variables para controlar el estado del juego.
     turno_1, jugador1, jugador2, turno = True, "", "", 0
 
-    # Método para modificar el tablero basado en la posición elegida por el jugador.
+    # Resto del código...
+       # Método para modificar el tablero basado en la posición elegida por el jugador.
     def cambiar_tablero(self, posicion, jugador):
         simbolo = "x" if jugador else "o"
-        # Corrección: Simplificación de la asignación de coordenadas.
         coordenadas = [
-            (0, 0), (0, 2), (0, 4),
+            (4, 0), (4, 2), (4, 4),
             (2, 0), (2, 2), (2, 4),
-            (4, 0), (4, 2), (4, 4)
+            (0, 0), (0, 2), (0, 4)
         ]
         fila, columna = coordenadas[posicion - 1]
         if self._tablero[fila][columna] == " ":
@@ -38,7 +35,7 @@ class Gato:
 
     # Método para determinar si hay un ganador
     def ganador(self):
-        # Mejora: Uso de desempaquetamiento extendido para simplificar la creación de líneas de victoria.
+        # Definición de las líneas de victoria utilizando zip para crear pares de coordenadas.
         lineas_victoria = [
             # Filas
             [(i, j) for i, j in zip([0, 0, 0], [0, 2, 4])],
@@ -102,3 +99,4 @@ tablero_inicial = [
 ]
 juego = Gato(tablero_inicial, "", "")
 juego.iniciar_juego()
+
